@@ -374,11 +374,13 @@ It's a Date, Right? ${emojis.hands}${emojis.twoHearts}`;
             const encodedMessage = encodeURIComponent(message);
             const isMobileDevice = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
                 || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+            const whatsappPhone = '917491021576';
             const whatsappUrl = isMobileDevice
-                ? `whatsapp://send?text=${encodedMessage}`
-                : `https://web.whatsapp.com/send?text=${encodedMessage}`;
-            const decodedMessage = new URL(whatsappUrl).searchParams.get('text');
-            if (decodedMessage !== message || decodedMessage.includes('\uFFFD') || !expectedEmojis.every(emoji => decodedMessage.includes(emoji))) {
+                ? `whatsapp://send?phone=${whatsappPhone}&text=${encodedMessage}`
+                : `https://web.whatsapp.com/send?phone=${whatsappPhone}&text=${encodedMessage}`;
+            const whatsappLink = new URL(whatsappUrl);
+            const decodedMessage = whatsappLink.searchParams.get('text');
+            if (whatsappLink.searchParams.get('phone') !== whatsappPhone || decodedMessage !== message || decodedMessage.includes('\uFFFD') || !expectedEmojis.every(emoji => decodedMessage.includes(emoji))) {
                 console.error('WhatsApp URL did not preserve the complete Unicode message; WhatsApp was not opened.');
                 window.alert('The WhatsApp message could not be verified. Please try again.');
                 return;
