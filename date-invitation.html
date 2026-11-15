@@ -333,23 +333,53 @@
                 return;
             }
 
-            const message = `Heyy! \u{2764}\u{FE0F}\u{1F979}
+            const emojis = {
+                affectionate: String.fromCodePoint(0x1F970),
+                heart: String.fromCodePoint(0x2764, 0xFE0F),
+                growingHeart: String.fromCodePoint(0x1F497),
+                calendar: String.fromCodePoint(0x1F4C5),
+                clock: String.fromCodePoint(0x23F0),
+                location: String.fromCodePoint(0x1F4CD),
+                rose: String.fromCodePoint(0x1F339),
+                hands: String.fromCodePoint(0x1FAF6),
+                twoHearts: String.fromCodePoint(0x1F495)
+            };
 
-Finally, tumne mere saath ek date par jaane ka plan bana hi liya! \u{1FAE3}\u{2764}\u{FE0F}
+            const message = `Heyy! ${emojis.affectionate}${emojis.heart}
 
-Main is din ko tumhare saath ek khoobsurat memory banana chahta hoon. Tumhara saath, thodi si baatein, dher saari smiles aur kuch special moments... bas itna hi toh chahiye mujhe. \u{1F497}
+Finally, tumne mere saath ek date par jaane ka plan bana hi liya! ${emojis.heart}
 
-\u{1F4C5} Date: ${formattedDate}
-\u{23F0} Time: ${formattedTime}
-\u{1F4CD} Location: ${location}
+Main is din ko tumhare saath ek khoobsurat memory banana chahta hoon. Tumhara saath, thodi si baatein, dher saari smiles aur kuch special moments... bas itna hi toh chahiye mujhe. ${emojis.growingHeart}
 
-Ab bas tumhara intezaar rahega, Miss Beautiful! \u{1F970}
+${emojis.calendar} Date: ${formattedDate}
+${emojis.clock} Time: ${formattedTime}
+${emojis.location} Location: ${location}
 
-Ek promise hai, tumhare chehre par smile laane ki poori koshish karunga. \u{2764}\u{FE0F}
+Ab bas tumhara intezaar rahega, Miss Beautiful! ${emojis.rose}
 
-It's a Date, Right? \u{1FAF6}\u{1F3FB}\u{1F495}`;
+Ek promise hai, tumhare chehre par smile laane ki poori koshish karunga. ${emojis.heart}
 
-            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message.normalize('NFC'))}`;
+It's a Date, Right? ${emojis.hands}${emojis.twoHearts}`;
+
+            const replacementCharacterIndex = message.indexOf('\uFFFD');
+            console.log('WhatsApp message before encoding:', message);
+            console.log('WhatsApp message contains U+FFFD:', replacementCharacterIndex !== -1, 'index:', replacementCharacterIndex);
+            const expectedEmojis = Object.values(emojis);
+            if (replacementCharacterIndex !== -1 || !expectedEmojis.every(emoji => message.includes(emoji))) {
+                console.error('WhatsApp message contains U+FFFD or is missing an expected emoji; WhatsApp was not opened.');
+                window.alert('The WhatsApp message contains an invalid character. Please review the message and try again.');
+                return;
+            }
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://web.whatsapp.com/send?text=${encodedMessage}`;
+            const decodedMessage = new URL(whatsappUrl).searchParams.get('text');
+            if (decodedMessage !== message || decodedMessage.includes('\uFFFD') || !expectedEmojis.every(emoji => decodedMessage.includes(emoji))) {
+                console.error('WhatsApp URL did not preserve the complete Unicode message; WhatsApp was not opened.');
+                window.alert('The WhatsApp message could not be verified. Please try again.');
+                return;
+            }
+
             window.location.href = whatsappUrl;
         });
     </script>

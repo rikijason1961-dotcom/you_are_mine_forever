@@ -58,7 +58,7 @@
             height: 100%;
             background: #020202;
             color: white;
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Outfit', 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Twemoji Mozilla', sans-serif;
             overflow-x: hidden;
             overflow-y: auto;
         }
@@ -74,12 +74,12 @@
         }
 
         .font-main-title {
-            font-family: 'Dancing Script', cursive;
+            font-family: 'Dancing Script', 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Twemoji Mozilla', cursive;
             letter-spacing: 0.02em;
         }
 
         .font-elegant {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Playfair Display', 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Twemoji Mozilla', serif;
             font-style: italic;
         }
 
@@ -441,6 +441,7 @@
                             <div className="tape-strip"></div>
                             <img src={img} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700" />
                         </div>
+                        <p className="mb-6 text-center text-xs text-white/60">Your response is not shared with anyone. IP addresses are not collected.</p>
                         <div className="flex flex-col md:flex-row gap-5 w-full justify-center items-center">
                             <button onClick={yes} className="w-full md:w-auto px-10 md:px-14 py-4 md:py-5 bg-gradient-to-r from-pink-600 to-rose-500 text-white font-bold text-lg md:text-xl uppercase tracking-widest rounded-sm shadow-xl hover:-translate-y-1 hover:shadow-pink-500/50 transition-all btn-shine">Yes, Forever</button>
                             <button onClick={no} onMouseEnter={handleNoHover} onTouchStart={handleNoHover} className="w-full md:w-auto px-10 md:px-12 py-4 md:py-5 border border-white/20 text-white/60 font-elegant hover:text-white hover:border-white hover:bg-white/5 transition-all rounded-sm italic">No</button>
